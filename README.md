@@ -1,6 +1,6 @@
 Plan of the ‘Comment cloud’ Project (Team # 4):
-1.	Pick up the idea from the pool of ideas and discuss technical possibilities  and needs to develop it;
-2.	Make a presentation, short description of the Project and GitHub Project page;
+- [ ] 1.	Pick up the idea from the pool of ideas and discuss technical possibilities  and needs to develop it;
+- [ ] 2.	Make a presentation, short description of the Project and GitHub Project page;
 3.	Create a Roles and Responsibilities matrix; 
 4.	Compose a Technical brief for the Project and make agree with the design of the website;
 5.	Compose the development stack;
