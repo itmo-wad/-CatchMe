@@ -1,11 +1,9 @@
 import logging
+import os
 from logging.handlers import RotatingFileHandler
 
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
-
-from .user import User
-
 
 db = SQLAlchemy()
 
@@ -21,16 +19,37 @@ def configure_logging():
     return logger
 
 
-def create_app():
-    app = Flask(__name__)
+def register_blueprints(app):
+    from .main_controller import main as main_blueprint
+    app.register_blueprint(main_blueprint)
+    return None
+
+
+def create_db(app):
     DB_URL = 'postgresql+psycopg2://{user}:{pw}@{url}/{db}'.format(user='user1', pw='user1', url='localhost:5432', db='commentcloud')
     app.config['SQLALCHEMY_DATABASE_URI'] = DB_URL
     app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+    app.config['SQLALCHEMY_ECHO'] = True
     db.init_app(app)
-    db.create_all()
+
+
+def create_app():
+    app = Flask(__name__)
+    app.secret_key = os.urandom(16)
+    # create_db(app)
+
+    DB_URL = 'postgresql+psycopg2://{user}:{pw}@{url}/{db}'.format(user='user1', pw='user1', url='localhost:5432',
+                                                                   db='commentcloud')
+    app.config['SQLALCHEMY_DATABASE_URI'] = DB_URL
+    app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+    app.config['SQLALCHEMY_ECHO'] = True
+    db.init_app(app)
 
     from .main_controller import main as main_blueprint
     app.register_blueprint(main_blueprint)
 
-    logger = configure_logging()
+    # register_blueprints(app)
+    configure_logging()
+    with app.app_context():
+        db.create_all()
     return app
