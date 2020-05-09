@@ -36,19 +36,19 @@ def create_db(app):
 def create_app():
     app = Flask(__name__)
     app.secret_key = os.urandom(16)
-    # create_db(app)
+    create_db(app)
 
-    DB_URL = 'postgresql+psycopg2://{user}:{pw}@{url}/{db}'.format(user='user1', pw='user1', url='localhost:5432',
-                                                                   db='commentcloud')
-    app.config['SQLALCHEMY_DATABASE_URI'] = DB_URL
-    app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
-    app.config['SQLALCHEMY_ECHO'] = True
-    db.init_app(app)
+    # DB_URL = 'postgresql+psycopg2://{user}:{pw}@{url}/{db}'.format(user='user1', pw='user1', url='localhost:5432',
+    #                                                                db='commentcloud')
+    # app.config['SQLALCHEMY_DATABASE_URI'] = DB_URL
+    # app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+    # app.config['SQLALCHEMY_ECHO'] = True
+    # db.init_app(app)
 
-    from .main_controller import main as main_blueprint
-    app.register_blueprint(main_blueprint)
+    # from .main_controller import main as main_blueprint
+    # app.register_blueprint(main_blueprint)
 
-    # register_blueprints(app)
+    register_blueprints(app)
     configure_logging()
     with app.app_context():
         db.create_all()
