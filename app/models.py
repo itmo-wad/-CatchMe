@@ -6,14 +6,8 @@ class Visitor(db.Model):
     token = db.Column(db.String, unique=True)
     username = db.Column(db.String(120), unique=False)
 
-    # def __init__(self, token):
-    #     self.token = token
-
     def __repr__(self):
-        return '<User %r>' % self.token
-
-    def set_username(self, username):
-        self.username = username
+        return "{'User' : [id='%s', token='%s', username='%s']}" % (self.id, self.token, self.username)
 
 
 class Comment(db.Model):
@@ -30,15 +24,8 @@ class Comment(db.Model):
     web_site_admin = db.relationship('WebSiteAdmin',
                               backref=db.backref('web_admins', lazy=True))
 
-    # def __init__(self, parent_id, web_site_admin_id, user_id, what_is_commented_id, comment_text):
-    #     self.parent_id = parent_id
-    #     self.web_site_admin_id = web_site_admin_id
-    #     self.user_id = user_id
-    #     self.what_is_commented_id = what_is_commented_id
-    #     self.comment_text = comment_text
-
     def __repr__(self):
-        return '<Comment_text: %s>' % self.comment_text
+        return '<Comment_id: %s, comment_text: %s>' % (self.id, self.comment_text)
 
 
 class WebSiteAdmin(db.Model):
@@ -48,10 +35,6 @@ class WebSiteAdmin(db.Model):
     username = db.Column(db.String(120), unique=True)
     passwdhash = db.Column(db.String, unique=False)
     token = db.Column(db.String, unique=True)
-
-    # def __init__(self, email, username):
-    #     self.username = username
-    #     self.email = email
 
     def __repr__(self):
         return '<User %r>' % self.username
