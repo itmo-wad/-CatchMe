@@ -1,9 +1,9 @@
 Plan of the ‘Comment cloud’ Project (Team # 4):
-- [ ] 1.	Pick up the idea from the pool of ideas and discuss technical possibilities  and needs to develop it;
-- [ ] 2.	Make a presentation, short description of the Project and GitHub Project page;
-- [ ] 3.	Create a Roles and Responsibilities matrix; 
-- [ ] 4.	Compose a Technical brief for the Project and make agree with the design of the website;
-- [ ] 5.	Compose the development stack;
+- [x] 1.	Pick up the idea from the pool of ideas and discuss technical possibilities  and needs to develop it;
+- [x] 2.	Make a presentation, short description of the Project and GitHub Project page;
+- [x] 3.	Create a Roles and Responsibilities matrix; 
+- [x] 4.	Compose a Technical brief for the Project and make agree with the design of the website;
+- [x] 5.	Compose the development stack;
 - [ ] 6.	Create a backend part:
 
     - [ ]   6.1. Design and implement the database;
@@ -12,7 +12,7 @@ Plan of the ‘Comment cloud’ Project (Team # 4):
 
     - [ ]   6.3 Test and validate the API;
 
-    - [ ]   6.4 Implementing the security at the API level (JWT);
+    - [x]   6.4 Implementing the security at the API level (JWT);
 
     - [ ]  6.5. Perform all necessary registrations: Google authentication, built-in registration (built-in captcha check from Google to protect against bot);
 
