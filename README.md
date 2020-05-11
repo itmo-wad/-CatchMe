@@ -6,7 +6,7 @@ Plan of the ‘Comment cloud’ Project (Team # 4):
 - [x] 5.	Compose the development stack;
 - [ ] 6.	Create a backend part:
 
-    - [ ]   6.1. Design and implement the database;
+    - [x]   6.1. Design and implement the database;
 
     - [ ]   6.2 Implement the basic RESTFUL API supporting all required functions;
 
