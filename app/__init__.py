@@ -2,7 +2,7 @@ import logging
 import os
 from logging.handlers import RotatingFileHandler
 
-from flask_login import LoginManager
+# from flask_login import LoginManager
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 
@@ -27,7 +27,7 @@ def register_blueprints(app):
 
 
 def create_db(app):
-    DB_URL = 'postgresql+psycopg2://{user}:{pw}@{url}/{db}'.format(user='user1', pw='user1', url='localhost:5432',
+    DB_URL = 'postgresql+psycopg2://{user}:{pw}@{url}/{db}'.format(user='wad4', pw='CommentCloud', url='localhost:5432',
                                                                    db='commentcloud')
     app.config['SQLALCHEMY_DATABASE_URI'] = DB_URL
     app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
@@ -39,7 +39,7 @@ def create_app():
     app = Flask(__name__)
     app.secret_key = os.urandom(16)
     create_db(app)
-    login = LoginManager(app)
+    # login = LoginManager(app)
     register_blueprints(app)
     configure_logging()
     with app.app_context():
