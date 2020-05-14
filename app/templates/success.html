@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+    <h1> Authentication <h2> Succed </h2></h1>
+    <br/>
+    <textarea class="token_area" rows="3" cols="60" name="description">
+    Enter details here...
+    </textarea>
+    <button class="button button-block gen_token">Get Token</button>
+    <a href="/logout">
+      <button class="button button-block logout">Log Out</button>
+    </a>
+
+{% endblock %}
