@@ -51,7 +51,7 @@ Plan of the ‘Comment cloud’ Project (Team # 4):
 
 **Copyright**
 
-![Copyright](https://github.com/itmo-wad/CommentCloud/blob/master/LOGO%20official%20Comments%20cloud.docx.mp4)
+![Copyright](https://github.com/itmo-wad/CommentCloud/blob/master/Comment%20cloud.gif)
 
 **License**
 
