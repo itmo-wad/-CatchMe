@@ -27,7 +27,7 @@ def register_blueprints(app):
 
 
 def create_db(app):
-    DB_URL = 'postgresql+psycopg2://{user}:{pw}@{url}/{db}'.format(user='wad4', pw='CommentCloud', url='localhost:5432',
+    DB_URL = 'postgresql+psycopg2://{user}:{pw}@{url}/{db}'.format(user='simple_user', pw='simple_user', url='localhost:5432',
                                                                    db='commentcloud')
     app.config['SQLALCHEMY_DATABASE_URI'] = DB_URL
     app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False

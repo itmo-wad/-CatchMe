@@ -1,40 +1,46 @@
 from app import db
 
 
-class Visitor(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    token = db.Column(db.String, unique=True)
-    username = db.Column(db.String(120), unique=False)
+class Comments(db.Model):
+    __tablename__ = 'comments'
+    Id = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    ParentId = db.Column(db.Integer)
+    SiteAdminId = db.Column(db.Integer, db.ForeignKey('siteadmins.Id'), nullable=False)
+    Username = db.Column(db.String(16), nullable=False)
+    CommentObjectId = db.Column(db.Integer, nullable=False)
+    CommentText = db.Column(db.String(256))
+
+    SiteAdmin = db.relationship('SiteAdmins',
+                            backref=db.backref('comment', lazy=True))
 
     def __repr__(self):
-        return "{'User' : [id='%s', token='%s', username='%s']}" % (self.id, self.token, self.username)
+        return "{'Comment' : [id='%s', parent_id='%s', site_admin_id='%s', username='%s', CommentObjectId='%s', " \
+               "CommentText='%s']}" % (self.Id, self.ParentId, self.SiteAdminId, self.Username, self.CommentObjectId,
+                                       self.CommentText)
 
 
-class Comment(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    parent_id = db.Column(db.Integer, unique=False)
-    web_site_admin_id = db.Column(db.Integer, db.ForeignKey('web_site_admin.id'))
-    visitor_id = db.Column(db.Integer, db.ForeignKey('visitor.id'), nullable=False)
-    what_is_commented_id = db.Column(db.Integer, unique=False)
-    comment_text = db.Column(db.String(128))
-
-    visitor = db.relationship('Visitor',
-                               backref=db.backref('comments', lazy=True))
-
-    web_site_admin = db.relationship('WebSiteAdmin',
-                              backref=db.backref('web_admins', lazy=True))
+class SiteAdmins(db.Model):
+    __tablename__ = 'siteadmins'
+    Id = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    Email = db.Column(db.String(32), unique=True)
+    Username = db.Column(db.String(16), unique=True)
+    Passwdhash = db.Column(db.String, unique=False)
 
     def __repr__(self):
-        return '<Comment_id: %s, comment_text: %s>' % (self.id, self.comment_text)
+        return "{'SiteAdmin' : [id='%s', email='%s', username='%s']}" % \
+               (self.Id, self.Email, self.Username)
 
 
-class WebSiteAdmin(db.Model):
-    db.__tablename__ = "web_site_admin"
-    id = db.Column(db.Integer, primary_key=True)
-    email = db.Column(db.String(80), unique=True)
-    username = db.Column(db.String(120), unique=True)
-    passwdhash = db.Column(db.String, unique=False)
-    token = db.Column(db.String, unique=True)
+class Tokens(db.Model):
+    __tablename__ = 'tokens'
+    Id = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    TokenValue = db.Column(db.String, unique=False, nullable=False)
+    Status = db.Column(db.Boolean, unique=False, nullable=False)
+    SiteAdminId = db.Column(db.Integer, db.ForeignKey('siteadmins.Id'), nullable=False)
+
+    SiteAdmin = db.relationship('SiteAdmins',
+                               backref=db.backref('token', lazy=True, uselist=False))
 
     def __repr__(self):
-        return '<User %r>' % self.username
+        return "{'Tokens' : [id='%s', token_value='%s' status='%s', site_admin_id='%s']}" % \
+               (self.Id, self.TokenValue, self.Status, self.SiteAdminId)

@@ -1,10 +1,13 @@
-from flask import request, url_for, redirect, jsonify
-from werkzeug.security import check_password_hash
-from flask_login import login_user
 from functools import wraps
-from . import users as u
-import jwt, datetime
+
+import datetime
+import jwt
+from flask import request, url_for, redirect, jsonify
+from flask_login import login_user
+from werkzeug.security import check_password_hash
+
 from app import app
+from . import users as u
 
 
 @app.route('/login/', methods=['POST'])
@@ -20,6 +23,7 @@ def login():
             return redirect(url_for('protected'))
     return redirect(url_for('index'))
 
+
 # Token generator
 def get_token():
     expiration_date = datetime.datetime.utcnow() + \
@@ -27,6 +31,7 @@ def get_token():
     token = jwt.encode({'exp': expiration_date},\
             app.secret_key, algorithm='HS256')
     return token
+
 
 # Token decorator
 # When called you need to pass a valid

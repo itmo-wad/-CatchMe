@@ -2,11 +2,11 @@ import logging
 import os
 
 from faker import Faker
-from flask import  request, Blueprint, send_from_directory, render_template
-from . import services
+from flask import Blueprint, send_from_directory, render_template
+import app.services as services
 
-from app.models import Visitor, Comment
-from . import db
+from app import db
+from app.models import Tokens, SiteAdmins
 
 fake = Faker()
 
@@ -16,13 +16,11 @@ logger = logging.getLogger(__name__)
 
 @main.route('/', methods=['GET'])
 def index():
-    # services.add_visitor(fake.name(), 'Visitor')
-    # visitor = services.get_visitor_by_username('Visitor')
-    # services.add_comment(visitor, 'comment text first')
-    # services.add_comment(visitor, 'second comment')
+    services.add_site_admin(username=fake.name(), email='vasya@mail.ru', passwdhash=fake.name())
+    services.set_token(token_value=fake.name(), status=True, site_admin_email='vasya@mail.ru')
+    services.add_comment(username=fake.name(), site_admin_email='vasya@mail.ru', comment_object_id=1010101, comment_text='Hello everyone')
+    logger.info(str(services.get_comment_by_comments_object_id(site_admin_email='vasya@mail.ru', comment_object_id=1010101)))
 
-    # search = services.get_visitor_by_username('Visitor')
-    # return str(Comment.query.with_parent(search).all())
     return render_template('index.html')
 
 
@@ -35,9 +33,9 @@ def login():
 def register():
     return render_template('register.html')
 
-@main.route('/', methods=['POST'])
-def okey():
-    return
+# @main.route('/', methods=['POST'])
+# def okey():
+#     return
 
 
 @main.route('/js/<string:script>')
