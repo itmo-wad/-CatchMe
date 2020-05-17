@@ -44,7 +44,15 @@ Plan of the ‘Comment cloud’ Project (Team # 4):
 - [ ] 11. Present the Project to the classmates on WAD course and to the general public;
 - [ ] 12. Sale the Project for a huge amount of money ))
 
-**DEMO:**
-![Demo:](https://github.com/itmo-wad/CommentCloud/blob/master/LOGO%20official%20Comments%20cloud.docx.mp4?raw=true)
+**Design**
+
+![Design of the website](https://github.com/itmo-wad/CommentCloud/blob/master/Preliminary%20design%20of%20the%20website.docx)
+
+
+**Copyright**
+
+![Copyright](https://github.com/itmo-wad/CommentCloud/blob/master/LOGO%20official%20Comments%20cloud.docx.mp4)
+
+**License**
 
 This Comment Cloud project is licensed under the terms of the MIT license.
