@@ -1,7 +1,10 @@
-<div align="left"><b>Comment Cloud Project</b><br>
-<img src="https://github.com/itmo-wad/CommentCloud/blob/master/Logo%20Comment%20cloud.png"><br>
+<div align="left">
+      <b>Comment Cloud Project</b><br>
+      <img src="https://github.com/itmo-wad/CommentCloud/blob/master/Logo%20Comment%20cloud.png"><br>
 </div>
+
 Plan of the ‘Comment cloud’ Project (Team # 4):
+
 - [x] 1.	Pick up the idea from the pool of ideas and discuss technical possibilities  and needs to develop it;
 - [x] 2.	Make a presentation, short description of the Project and GitHub Project page;
 - [x] 3.	Create a Roles and Responsibilities matrix; 
