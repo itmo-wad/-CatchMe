@@ -1,4 +1,10 @@
+<div align="left">
+      <b>Comment Cloud Project</b><br>
+      <img src="https://github.com/itmo-wad/CommentCloud/blob/master/Logo%20Comment%20cloud.png"><br>
+</div>
+
 Plan of the ‘Comment cloud’ Project (Team # 4):
+
 - [x] 1.	Pick up the idea from the pool of ideas and discuss technical possibilities  and needs to develop it;
 - [x] 2.	Make a presentation, short description of the Project and GitHub Project page;
 - [x] 3.	Create a Roles and Responsibilities matrix; 
@@ -38,3 +44,15 @@ Plan of the ‘Comment cloud’ Project (Team # 4):
 - [ ] 11. Present the Project to the classmates on WAD course and to the general public;
 - [ ] 12. Sale the Project for a huge amount of money ))
 
+**Design**
+
+![Design of the website](https://github.com/itmo-wad/CommentCloud/blob/master/Preliminary%20design%20of%20the%20website.docx)
+
+
+**Copyright**
+
+![Copyright](https://github.com/itmo-wad/CommentCloud/blob/master/Comment%20cloud.gif)
+
+**License**
+
+This Comment Cloud project is licensed under the terms of the MIT license.
