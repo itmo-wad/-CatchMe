@@ -31,6 +31,21 @@ def login():
     return render_template('login.html')
 
 
+@main.route('/admin', methods=['GET'])
+def admin():
+    return render_template('admin.html')
+
+
+@main.route('/generate_key', methods=['GET'])
+def generate_key():
+    return render_template('generate_key.html')
+
+@main.route('/gen_token', methods=['GET'])
+# @login_required
+def gen_token():
+    token = services.get_token()
+    return token
+
 @main.route('/register', methods=['GET'])
 def register():
     return render_template('register.html')

@@ -1,8 +1,10 @@
 from faker import Faker
 import logging
 
-from app import db
+from app import db, secret_key
 from app.models import Visitor, Comment
+
+import jwt, datetime
 
 logger = logging.getLogger(__name__)
 fake = Faker()
@@ -24,4 +26,10 @@ def add_comment(visitor, comment_text):
     db.session.add(comment)
     db.session.commit()
 
-
+# Token generator
+def get_token():
+    expiration_date = datetime.datetime.utcnow() + \
+            datetime .timedelta(seconds=100)
+    token = jwt.encode({'exp': expiration_date},\
+            secret_key, algorithm='HS256')
+    return token
