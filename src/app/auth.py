@@ -1,8 +1,11 @@
 from werkzeug.security import check_password_hash
 from flask_login import UserMixin, current_user, login_required
 from flask_login import logout_user, login_user
-from flask import redirect, url_for
+from flask import redirect, url_for, jsonify
+from functools import wraps
+from app import secret_key
 from app import login as l
+import datetime, jwt
 
 class User(UserMixin):
     pass
@@ -63,3 +66,23 @@ def logout():
 def unauthorized_handler():
     # flash("Please login before #Пожалуйста!")
     return redirect(url_for("main.index"))
+
+# Token generator
+def get_token():
+    expiration_date = datetime.datetime.utcnow() + \
+            datetime.timedelta(seconds=100)
+    token = jwt.encode({'exp': expiration_date},\
+            secret_key, algorithm='HS256')
+    return token
+
+
+def token_required(f):
+    @wraps(f)
+    def wrapper(*args, **kwargs):
+        token = request.args.get('token')
+        try:
+            jwt.decode(token, secret_key)
+            return f(*args, **kwargs)
+        except:
+            return jsonify({'error': 'Need a valid Token'}), 401
+    return wrapper

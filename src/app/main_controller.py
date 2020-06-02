@@ -64,7 +64,7 @@ def generate_key():
 @main.route('/gen_token', methods=['GET'])
 @auth.login_required
 def gen_token():
-    token = services.get_token()
+    token = auth.get_token()
     return token
 
 @main.route('/js/<string:script>')

@@ -3,7 +3,7 @@ import logging
 from faker import Faker
 from flask import jsonify, request
 from functools import wraps
-from app import db, secret_key
+from app import db
 from app.models import Comments, SiteAdmins, Tokens
 
 import datetime, jwt
