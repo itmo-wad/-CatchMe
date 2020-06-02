@@ -1,0 +1,41 @@
+.bubble {
+  width: 0px;
+  height: 0px;
+  position: absolute;
+  background: transparent;
+  border: 10px solid #ccc;
+}
+
+.arrow {
+  top: 10px;
+  left: -25px;
+  border-top-color: transparent;
+  border-left-color: transparent;
+  border-bottom-color: transparent;
+}
+
+.title-message {
+	color: black;
+	font-family: 'Arial';
+	font-size: 15px;
+	color: #959392;
+}
+
+.dialogbox .comment-box {
+  position: relative;
+  height: auto;
+  margin: 25px 20px;
+  padding: 5px;
+  background-color: #DADADA;
+  border-radius: 2px;
+  border: 5px solid #ccc;
+	max-width: 450px;
+}
+
+.comment-box .message {
+	color: #959392;
+  min-height: 30px;
+  border-radius: 3px;
+  font-size: 16px;
+  line-height: 1.5;
+}
