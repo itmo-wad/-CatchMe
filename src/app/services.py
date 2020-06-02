@@ -1,9 +1,12 @@
 import logging
 
 from faker import Faker
-
-from app import db
+from flask import jsonify, request
+from functools import wraps
+from app import db, secret_key
 from app.models import Comments, SiteAdmins, Tokens
+
+import datetime, jwt
 
 logger = logging.getLogger(__name__)
 fake = Faker()
@@ -41,3 +44,22 @@ def add_comment(site_admin_email, username, comment_object_id, comment_text, par
     db.session.commit()
 
 
+# Token generator
+def get_token():
+    expiration_date = datetime.datetime.utcnow() + \
+            datetime.timedelta(seconds=100)
+    token = jwt.encode({'exp': expiration_date},\
+            secret_key, algorithm='HS256')
+    return token
+
+
+def token_required(f):
+    @wraps(f)
+    def wrapper(*args, **kwargs):
+        token = request.args.get('token')
+        try:
+            jwt.decode(token, secret_key)
+            return f(*args, **kwargs)
+        except:
+            return jsonify({'error': 'Need a valid Token'}), 401
+    return wrapper

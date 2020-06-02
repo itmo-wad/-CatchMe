@@ -2,12 +2,13 @@ import logging
 import os
 from logging.handlers import RotatingFileHandler
 
-# from flask_login import LoginManager
+from flask_login import LoginManager
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 
 db = SQLAlchemy()
 
+secret_key = os.urandom(16)
 
 def configure_logging():
     logger = logging.getLogger(__name__)
@@ -35,13 +36,23 @@ def create_db(app):
     db.init_app(app)
 
 
-def create_app():
-    app = Flask(__name__)
-    app.secret_key = os.urandom(16)
-    create_db(app)
-    # login = LoginManager(app)
-    register_blueprints(app)
-    configure_logging()
-    with app.app_context():
-        db.create_all()
-    return app
+# def create_app():
+#     app = Flask(__name__)
+#     app.secret_key = secret_key
+#     create_db(app)
+#     # login = LoginManager(app)
+#     register_blueprints(app)
+#     configure_logging()
+#     with app.app_context():
+#         db.create_all()
+#     return app
+
+
+app = Flask(__name__)
+app.secret_key = secret_key
+create_db(app)
+login = LoginManager(app)
+register_blueprints(app)
+configure_logging()
+with app.app_context():
+    db.create_all()

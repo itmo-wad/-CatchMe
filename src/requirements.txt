@@ -2,4 +2,5 @@ flask
 flask-login
 flask-sqlalchemy
 psycopg2-binary
+PyJWT
 Faker
