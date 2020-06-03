@@ -16,6 +16,8 @@ services:
             POSTGRES_USER: "simple_user"
             POSTGRES_PASSWORD: "simple_user"
             POSTGRES_DB: "commentcloud"
+        volumes:
+            - postgres_data:/var/lib/postgresql/data
 
     comment-cloud:
         build:
@@ -25,3 +27,6 @@ services:
         command: python3 run.py
         volumes:
           - ./src:/usr/comment_cloud/src
+
+volumes:
+    postgres_data:
