@@ -7,7 +7,6 @@ from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 
 db = SQLAlchemy()
-
 secret_key = os.urandom(16)
 
 def configure_logging():
@@ -22,8 +21,11 @@ def configure_logging():
 
 
 def register_blueprints(app):
-    from .main_controller import main as main_blueprint
+    from .controllers.main import main as main_blueprint
     app.register_blueprint(main_blueprint)
+
+    from .controllers.auth import auth
+    app.register_blueprint(auth)
     return None
 
 
@@ -34,18 +36,6 @@ def create_db(app):
     app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
     app.config['SQLALCHEMY_ECHO'] = True
     db.init_app(app)
-
-
-# def create_app():
-#     app = Flask(__name__)
-#     app.secret_key = secret_key
-#     create_db(app)
-#     # login = LoginManager(app)
-#     register_blueprints(app)
-#     configure_logging()
-#     with app.app_context():
-#         db.create_all()
-#     return app
 
 
 app = Flask(__name__)

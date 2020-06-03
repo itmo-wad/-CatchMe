@@ -1,15 +1,9 @@
 import logging
 
-from faker import Faker
-from flask import jsonify, request
-from functools import wraps
 from app import db
 from app.models import Comments, SiteAdmins, Tokens
 
-import datetime, jwt
-
 logger = logging.getLogger(__name__)
-fake = Faker()
 
 
 def get_comment_by_comments_object_id(site_admin_email, comment_object_id):
@@ -18,48 +12,54 @@ def get_comment_by_comments_object_id(site_admin_email, comment_object_id):
 
 
 def add_site_admin(username, email, passwdhash):
-    site_admin = SiteAdmins(Username=username, Email=email, Passwdhash=passwdhash)
-    logger.info(site_admin)
-    db.session.add(site_admin)
-    db.session.commit()
+    try:
+        site_admin = SiteAdmins(Username=username, Email=email, Passwdhash=passwdhash)
+        db.session.add(site_admin)
+        db.session.commit()
+    except Exception as ex:
+        logger.warning('func -- add_site_admin: ' + str(ex))
 
 
 def set_token(token_value, status, site_admin_email):
-    site_admin = SiteAdmins.query.filter(SiteAdmins.Email == site_admin_email).first()
-    logger.info(site_admin)
-    token = Tokens(TokenValue=token_value, Status=status, SiteAdmin=site_admin)
-    logger.info(token)
-    db.session.add(token)
-    db.session.commit()
+    try:
+        site_admin = SiteAdmins.query.filter(SiteAdmins.Email == site_admin_email).first()
+        token = Tokens(TokenValue=token_value, Status=status, SiteAdmin=site_admin)
+        logger.info(token)
+        db.session.add(token)
+        db.session.commit()
+    except Exception as ex:
+        logger.warning('func -- set_token: ' + str(ex))
 
 
 def add_comment(site_admin_email, username, comment_object_id, comment_text, parent_id=None):
-    site_admin = SiteAdmins.query.filter(SiteAdmins.Email == site_admin_email).first()
-    logger.info(site_admin)
-
-    comment = Comments(Username=username, CommentObjectId=comment_object_id,
-                       CommentText=comment_text, ParentId=parent_id, SiteAdmin=site_admin)
-    logger.info(comment)
-    db.session.add(comment)
-    db.session.commit()
-
-
-# Token generator
-def get_token():
-    expiration_date = datetime.datetime.utcnow() + \
-            datetime.timedelta(seconds=100)
-    token = jwt.encode({'exp': expiration_date},\
-            secret_key, algorithm='HS256')
-    return token
+    try:
+        site_admin = SiteAdmins.query.filter(SiteAdmins.Email == site_admin_email).first()
+        comment = Comments(Username=username, CommentObjectId=comment_object_id,
+                           CommentText=comment_text, ParentId=parent_id, SiteAdmin=site_admin)
+        logger.info(comment)
+        db.session.add(comment)
+        db.session.commit()
+    except Exception as ex:
+        logger.warning('func -- add_comment: ' + str(ex))
 
 
-def token_required(f):
-    @wraps(f)
-    def wrapper(*args, **kwargs):
-        token = request.args.get('token')
-        try:
-            jwt.decode(token, secret_key)
-            return f(*args, **kwargs)
-        except:
-            return jsonify({'error': 'Need a valid Token'}), 401
-    return wrapper
+def get_site_admin_by_email(site_admin_email):
+    try:
+        site_admin = SiteAdmins.query.filter(SiteAdmins.Email == site_admin_email).first()
+        if site_admin:
+            return site_admin
+        else:
+            return None
+    except Exception as ex:
+        logger.info('func -- get_site_admin_by_email: ' + str(ex))
+
+
+def get_site_admin_by_username(site_admin_username):
+    try:
+        site_admin = SiteAdmins.query.filter(SiteAdmins.Username == site_admin_username).first()
+        if site_admin:
+            return site_admin
+        else:
+            return None
+    except Exception as ex:
+        logger.info('func -- get_site_admin_by_username: ' + str(ex))

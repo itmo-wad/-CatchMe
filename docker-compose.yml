@@ -21,6 +21,7 @@ services:
         build:
             dockerfile: Dockerfile
             context: .
+        restart: always
         command: python3 run.py
         volumes:
-          - ./src:/usr/src/app/
+          - ./src:/usr/comment_cloud/src

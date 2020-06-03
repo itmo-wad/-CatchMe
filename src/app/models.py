@@ -24,7 +24,7 @@ class SiteAdmins(db.Model):
     Id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     Email = db.Column(db.String(32), unique=True)
     Username = db.Column(db.String(16), unique=True)
-    Passwdhash = db.Column(db.String, unique=False)
+    Passwdhash = db.Column(db.String(256), unique=False)
 
     def __repr__(self):
         return "{'SiteAdmin' : [id='%s', email='%s', username='%s']}" % \
@@ -44,3 +44,4 @@ class Tokens(db.Model):
     def __repr__(self):
         return "{'Tokens' : [id='%s', token_value='%s' status='%s', site_admin_id='%s']}" % \
                (self.Id, self.TokenValue, self.Status, self.SiteAdminId)
+
