@@ -2,11 +2,12 @@ import logging
 import os
 from logging.handlers import RotatingFileHandler
 
+from flask_login import LoginManager
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 
 db = SQLAlchemy()
-
+secret_key = os.urandom(16)
 
 def configure_logging():
     logger = logging.getLogger(__name__)
@@ -20,13 +21,16 @@ def configure_logging():
 
 
 def register_blueprints(app):
-    from .main_controller import main as main_blueprint
+    from .controllers.main import main as main_blueprint
     app.register_blueprint(main_blueprint)
+
+    from .controllers.auth import auth
+    app.register_blueprint(auth)
     return None
 
 
 def create_db(app):
-    DB_URL = 'postgresql+psycopg2://{user}:{pw}@{url}/{db}'.format(user='user1', pw='user1', url='localhost:5432',
+    DB_URL = 'postgresql+psycopg2://{user}:{pw}@{url}/{db}'.format(user='simple_user', pw='simple_user', url='db:5432',
                                                                    db='commentcloud')
     app.config['SQLALCHEMY_DATABASE_URI'] = DB_URL
     app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
@@ -34,13 +38,11 @@ def create_db(app):
     db.init_app(app)
 
 
-def create_app():
-    app = Flask(__name__)
-    app.secret_key = os.urandom(16)
-    create_db(app)
-
-    register_blueprints(app)
-    configure_logging()
-    with app.app_context():
-        db.create_all()
-    return app
+app = Flask(__name__)
+app.secret_key = secret_key
+create_db(app)
+login = LoginManager(app)
+register_blueprints(app)
+configure_logging()
+with app.app_context():
+    db.create_all()
