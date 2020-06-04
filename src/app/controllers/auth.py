@@ -4,7 +4,7 @@ from functools import wraps
 
 import jwt
 from flask import request, url_for, redirect, jsonify, Blueprint, render_template
-from flask_login import login_user
+from flask_login import login_user, logout_user, login_required
 from werkzeug.security import check_password_hash, generate_password_hash
 
 from . import users as u
@@ -17,6 +17,12 @@ logger = logging.getLogger(__name__)
 @auth.route('/login', methods=['GET'])
 def login():
     return render_template('login.html')
+
+@auth.route("/logout")
+@login_required
+def logout():
+    logout_user()
+    return redirect(url_for("main.index"))
 
 
 @auth.route('/register', methods=['GET'])
@@ -38,8 +44,8 @@ def login_post():
             user = u.User()
             user.id = email
             login_user(user)
-            return redirect(url_for('main.index'))
-    return "ERROR"
+            return redirect(url_for('main.admin'))
+    return redirect(url_for('auth.login'))
 
 
 @auth.route('/register', methods=['POST'])

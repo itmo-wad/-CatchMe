@@ -3,7 +3,9 @@ import os
 
 from faker import Faker
 from flask import Blueprint, send_from_directory, render_template
+from flask import make_response
 from flask_login import login_required
+from app import app
 
 from . import auth
 
@@ -45,15 +47,35 @@ def gen_token():
 
 @main.route('/js/<string:script>')
 def rout_js(script):
-    return send_from_directory(os.path.join(main.root_path, 'static', 'js'),
+    return send_from_directory(os.path.join(app.root_path, 'static', 'js'),
                                script)
 
 @main.route('/css/<string:style>')
 def rout_css(style):
-    return send_from_directory(os.path.join(main.root_path, 'static', 'css'),
+    return send_from_directory(os.path.join(app.root_path, 'static', 'css'),
                                style)
 
 @main.route('/img/<string:img>')
 def rout_img(img):
-    return send_from_directory(os.path.join(main.root_path, 'static', 'img'),
+    return send_from_directory(os.path.join(app.root_path, 'static', 'img'),
                                img)
+
+# Error handling 404
+@app.errorhandler(404)
+def not_found(error):
+    """Page not found."""
+    return make_response(render_template("error/404.html"), 404)
+
+
+# Error handling 400
+@app.errorhandler(400)
+def bad_request():
+    """Bad request."""
+    return make_response(render_template("error/400.html"), 400)
+
+
+# Error handling 500
+@app.errorhandler(500)
+def server_error():
+    """Internal server error."""
+    return make_response(render_template("error/500.html"), 500)

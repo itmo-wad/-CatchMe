@@ -1,32 +1,12 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-	<meta charset="UTF-8">
-	<title>List Comment</title>
-	<link rel="stylesheet" href="css/admin.css">
-	<script src="https://use.fontawesome.com/releases/v5.13.0/js/all.js" data-auto-replace-svg="nest"></script>
-  <link rel="stylesheet" href="css/list_comment.css">
-</head>
-<body>
+{% extends "admin.html" %}
 
-<div class="envelop">
-    <div class="menu">
-				<a href="admin"><img style="width: 150px; height:100px" src="img/image_logo.png"></a>
-        <h4>Comment Cloud</h4>
-        <ul>
-            <li><a href="generate_key"><i class="fas fa-cogs"></i> Generate key</a></li>
-            <li><a href="list_comment"><i class="fas fa-quote-left"></i> List Comment</a></li>
-            <li><a href="#"><i class="fas fa-scroll"></i> Documentation</a></li>
-        </ul>
-    </div>
-    <div class="container">
-        <div class="username">
-  					<p>Name username</p>
-				</div>
-				<div class="button-logout">
-							<a href="logout">logout</a>
-				</div>
 
+{% block style %}
+		<link rel="stylesheet" href="css/list_comment.css">
+{% endblock %}
+
+
+{% block content %}
 				<div class="dialogbox">
 					<div class="comment-box">
 						<div class="title-message">
@@ -34,7 +14,7 @@
 						</div><br>
 						<span class="bubble arrow"></span>
 						<div class="message">
-							<span>Comment message</span>
+							<span>Comment messagesss</span>
 						</div>
 					</div>
 				</div>
@@ -50,9 +30,4 @@
 						</div>
 					</div>
 				</div>
-
-    </div>
-</div>
-
-</body>
-</html>
+{% endblock %}

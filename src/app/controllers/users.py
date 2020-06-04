@@ -21,5 +21,5 @@ def user_loader(email):
 @login.unauthorized_handler
 def unauthorized_handler():
     flash("Please login before Пожалуйста!")
-    return redirect(url_for("index"))
-    # return "WTF !!"
+    # return redirect(url_for("main.index"))
+    return "WTF !!"
