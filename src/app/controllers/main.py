@@ -8,6 +8,7 @@ from flask_login import login_required
 from app import app
 
 from . import auth
+from . import fake_api
 
 fake = Faker()
 
@@ -29,7 +30,10 @@ def admin():
 @main.route('/list_comment', methods=['GET'])
 @login_required
 def list_comment():
-    return render_template('list_comment.html')
+    # TODO
+    # Add filter to get comments per siteadmin
+    comments = fake_api.comment_database
+    return render_template('list_comment.html', comments=comments)
 
 
 @main.route('/generate_key', methods=['GET'])
@@ -65,6 +69,13 @@ def rout_img(img):
 def not_found(error):
     """Page not found."""
     return make_response(render_template("error/404.html"), 404)
+
+
+# Error handling 405
+@app.errorhandler(405)
+def bad_type(error):
+    """Bad Type."""
+    return make_response(render_template("error/405.html"), 405)
 
 
 # Error handling 400

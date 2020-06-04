@@ -28,6 +28,9 @@ def register_blueprints(app):
 
     from .controllers.auth import auth
     app.register_blueprint(auth)
+
+    from .controllers.fake_api import fake_api
+    app.register_blueprint(fake_api)
     return None
 
 

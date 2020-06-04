@@ -7,27 +7,19 @@
 
 
 {% block content %}
-				<div class="dialogbox">
-					<div class="comment-box">
-						<div class="title-message">
-							<span>Username first comment</span>
-						</div><br>
-						<span class="bubble arrow"></span>
-						<div class="message">
-							<span>Comment messagesss</span>
-						</div>
-					</div>
-				</div>
 
-				<div class="dialogbox">
-					<div class="comment-box">
-						<div class="title-message">
-							<span>Username second comment</span>
-						</div><br>
-						<span class="bubble arrow"></span>
-						<div class="message">
-							<span>Second comment message</span>
+				{% for comment in comments %}
+					<div class="dialogbox">
+						<div class="comment-box">
+							<div class="title-message">
+								<span>{{ comment.Username }} (mail {{ comment.Username }})</span>
+							</div><br>
+							<span class="bubble arrow"></span>
+							<div class="message">
+								<span>{{ comment.CommentText }}</span>
+							</div>
 						</div>
 					</div>
-				</div>
+		    {% endfor %}
+
 {% endblock %}

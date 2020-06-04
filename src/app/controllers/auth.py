@@ -4,11 +4,13 @@ from functools import wraps
 
 import jwt
 from flask import request, url_for, redirect, jsonify, Blueprint, render_template
+from flask import make_response
 from flask_login import login_user, logout_user, login_required
 from werkzeug.security import check_password_hash, generate_password_hash
 
 from . import users as u
 from .. import app, services
+
 
 auth = Blueprint('auth', __name__)
 logger = logging.getLogger(__name__)
@@ -17,6 +19,7 @@ logger = logging.getLogger(__name__)
 @auth.route('/login', methods=['GET'])
 def login():
     return render_template('login.html')
+
 
 @auth.route("/logout")
 @login_required
@@ -64,11 +67,10 @@ def register_post():
 
 
 
-
 # Token generator
 def get_token():
     expiration_date = datetime.datetime.utcnow() + \
-            datetime .timedelta(seconds=100)
+            datetime.timedelta(seconds=3600)
     token = jwt.encode({'exp': expiration_date}, app.secret_key, algorithm='HS256')
     return token
 
@@ -84,5 +86,5 @@ def token_required(f):
             jwt.decode(token, app.secret_key)
             return f(*args, **kwargs)
         except:
-            return jsonify({'error': 'Need a valid Token'}), 401
+            return make_response(jsonify({'error': 'Need a valid Token'}), 401)
     return wrapper
