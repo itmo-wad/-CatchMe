@@ -13,7 +13,6 @@ class Comments(db.Model):
                             backref=db.backref('comment', lazy=True))
 
     def __repr__(self):
-        # return {'site_admin_id': self.SiteAdminId, 'username': self.Username, 'comment_object_id': self.CommentObjectId, 'comment_text': self.CommentText}
         return "{'site_admin_id': '%s', 'username': '%s', 'comment_object_id': '%s', " \
                "'comment_text': '%s'}" % (self.SiteAdminId, self.Username, self.CommentObjectId,
                                        self.CommentText)

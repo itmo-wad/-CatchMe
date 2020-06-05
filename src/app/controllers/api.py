@@ -3,11 +3,9 @@ import logging
 import re
 
 import requests as request_other
-
-from flask import Blueprint, request, Response, jsonify, make_response
+from flask import Blueprint, request, jsonify, make_response
 from flask_login import current_user
 
-from .auth import token_required
 from .. import services
 
 api = Blueprint('api', __name__)
