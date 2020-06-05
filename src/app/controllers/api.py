@@ -4,7 +4,7 @@ import re
 
 import requests as request_other
 from requests import Request, Session
-from flask import Blueprint, request
+from flask import Blueprint, request, Response
 from flask_login import current_user
 
 from .auth import token_required
@@ -23,7 +23,7 @@ def add_comment_get():
     data = {"username": "Maxi", "comment_object_id": "grobb", "comment_text": "This is the this is"}
     data_json = json.dumps(data)
     newHeaders = {'Content-type': 'application/json', 'Accept': 'text/plain'}
-    r = request_other.post("http://192.168.1.62/add.comment?token={token}".format(token=token), json=data_json, headers=newHeaders)
+    r = request_other.post("http://192.168.0.108/add.comment?token={token}".format(token=token), json=data_json, headers=newHeaders)
     return "Okey"
 
 
@@ -56,9 +56,14 @@ def add_comment():
 
 @api.route('/show', methods=['GET'])
 def show_comments():
-    token = services.get_token_by_admin_email(current_user.id)
-    token = token.TokenValue
-    return str(services.show_comments_admin_id(token))
+    token_value = request.args.get('token')
+    logger.info(str(token_value))
+    site_admin_id = services.get_site_admin_id_by_token_value(token_value)
+    logger.info(str(site_admin_id))
+    if site_admin_id:
+        comments = services.get_comment_by_site_admin_id(site_admin_id)
+        logger.info(str(comments))
+    return Response(json.dumps(str(comments)), status=201, mimetype='application/json')
 
 
 def push_comment(token, username, comment_object_id, comment_text):
