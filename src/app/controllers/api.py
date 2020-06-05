@@ -35,6 +35,7 @@ def add_comment():
         logger.info(str(request.args.get('token')))
         logger.info(str(type(json_dict)) + "  " + str(json_dict))
         if (("username" and "comment_object_id" and "comment_text") in json_dict) and len(json_dict) == 3:
+        # if True:
             username = str(json_dict['username'])
             comment_object_id = str(json_dict['comment_object_id'])
             comment_text = str(json_dict['comment_text'])
@@ -55,9 +56,9 @@ def add_comment():
 
 @api.route('/show', methods=['GET'])
 def show_comments():
-    token = services.get_token_by_admin_email(current_user.id)
-    token = token.TokenValue
-    return str(services.show_comments_admin_id(token))
+    comments = services.get_comments_by_site_admin_id(current_user.id)
+    logger.info(str(type(comments)))
+    return str(comments)
 
 
 def push_comment(token, username, comment_object_id, comment_text):
