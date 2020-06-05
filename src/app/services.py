@@ -97,10 +97,10 @@ def get_token_by_admin_email(site_admin_email):
         logger.warning('func -- get_token_by_admin_email: ' + str(ex))
 
 
-def get_token_by_token(token):
+def get_token_by_token(token_value):
     try:
-        if token is not None:
-            token = Tokens.query.filter(Tokens.TokenValue == token).first()
+        if token_value is not None:
+            token = Tokens.query.filter(Tokens.TokenValue == token_value).first()
             if token:
                 return token
             else:
@@ -121,6 +121,7 @@ def get_comments_by_site_admin_id(site_admin_email, comment_object_id):
         return comments
     except Exception as ex:
         logger.warning('func -- get_comments_by_site_admin_id: ' + str(ex))
+
 
 # To check
 def show_tokens():

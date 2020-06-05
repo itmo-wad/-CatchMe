@@ -46,6 +46,7 @@ def validCommentObject(CommentObject):
 	else:
 		return False
 
+
 @fake_api.route('/send_comment', methods=['POST'])
 @token_required
 def send_comment():
@@ -71,3 +72,4 @@ def send_comment():
 # @token_required
 def test_api():
     return "OK"
+
