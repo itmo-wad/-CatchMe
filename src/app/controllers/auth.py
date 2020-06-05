@@ -45,15 +45,10 @@ def register():
 def login_post():
     email = request.form.get('username')
     password = request.form.get('password')
-    logger.info(str(email) + "  " + str(password))
     site_admin = services.get_site_admin_by_email(email)
     if site_admin:
-        logger.warning(str(check_password_hash(site_admin.Passwdhash, password)))
-        logging.warning(str(site_admin.Passwdhash))
-        logging.warning(str(site_admin))
         if check_password_hash(site_admin.Passwdhash, password):
             login_user(User(site_admin))
-            logger.info(str(current_user))
             return redirect(url_for('main.admin'))
     return "ERROR"
 
@@ -79,8 +74,8 @@ def get_token():
             datetime.timedelta(seconds=36000)
     token = jwt.encode({'exp': expiration_date}, app.secret_key, algorithm='HS256')
     services.set_token(token, current_user.id)
-    logger.info(str(services.get_site_admin_id_by_token_value(token)))
-    logger.info(str(services.show()))
+    # logger.info(str(services.get_site_admin_id_by_token_value(token)))
+    # logger.info(str(services.show()))
     return token
 
 

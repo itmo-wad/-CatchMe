@@ -1,8 +1,10 @@
+import datetime
 import logging
 import os
+from datetime import timedelta
 from logging.handlers import RotatingFileHandler
 
-from flask import Flask
+from flask import Flask, session
 from flask_login import LoginManager
 from flask_sqlalchemy import SQLAlchemy
 
@@ -55,3 +57,4 @@ register_blueprints(app)
 configure_logging()
 with app.app_context():
     db.create_all()
+app.config["REMEMBER_COOKIE_DURATION"] = datetime.timedelta(seconds=360)
