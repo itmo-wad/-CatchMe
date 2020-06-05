@@ -29,7 +29,7 @@ def index():
 @main.route('/admin', methods=['GET'])
 @login_required
 def admin():
-    logger.info(str(current_user))
+    logger.info("HERE:  " + str(current_user.id))
     return render_template('admin.html')
 
 
@@ -60,15 +60,18 @@ def rout_js(script):
     return send_from_directory(os.path.join(app.root_path, 'static', 'js'),
                                script)
 
+
 @main.route('/css/<string:style>')
 def rout_css(style):
     return send_from_directory(os.path.join(app.root_path, 'static', 'css'),
                                style)
 
+
 @main.route('/img/<string:img>')
 def rout_img(img):
     return send_from_directory(os.path.join(app.root_path, 'static', 'img'),
                                img)
+
 
 # Error handling 404
 @app.errorhandler(404)

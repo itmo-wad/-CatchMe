@@ -20,10 +20,10 @@ def add_site_admin(username, email, passwdhash):
         logger.warning('func -- add_site_admin: ' + str(ex))
 
 
-def set_token(token_value, status, site_admin_id):
+def set_token(token_value, status, site_admin_email):
     try:
         site_admin = SiteAdmins.query.filter(SiteAdmins.Email == site_admin_email).first()
-        token = Tokens(TokenValue=token_value, Status=status, SiteAdmin=site_admin)
+        token = Tokens(TokenValue=token_value, Status=status, SiteAdminId=site_admin.Id)
         logger.info(token)
         db.session.add(token)
         db.session.commit()
