@@ -27,7 +27,7 @@ def index():
 @login_required
 def admin():
     logger.info("HERE:  " + str(current_user.id))
-    return render_template('admin.html')
+    return render_template('admin.html', user=current_user)
 
 
 @main.route('/list_comment', methods=['GET'])
@@ -37,14 +37,14 @@ def list_comment():
     # Add filter to get comments per siteadmin
     # comments = fake_api.comment_database
     comments = services.get_comments_by_site_admin_id(current_user.id)
-    return render_template('list_comment.html', comments=comments)
+    return render_template('list_comment.html', comments=comments, user=current_user)
 
 
 @main.route('/generate_key', methods=['GET'])
 @login_required
 def generate_key():
     tokens = services.get_token_by_admin_email(current_user.id)
-    return render_template('generate_key.html', tokens=tokens)
+    return render_template('generate_key.html', tokens=tokens, user=current_user)
 
 
 @main.route('/save_token', methods=['GET'])

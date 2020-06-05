@@ -3,6 +3,7 @@ import logging
 import re
 
 import requests as request_other
+from requests import Request, Session
 from flask import Blueprint, request
 from flask_login import current_user
 
@@ -19,11 +20,25 @@ def add_comment_get():
     token = token.TokenValue
     logger.info(token)
     logger.info(current_user.id)
+
     data = {"username": "Maxi", "comment_object_id": "grobb", "comment_text": "This is the this is", "token": token}
     data_json = json.dumps(data)
-    newHeaders = {'Content-type': 'application/json', 'Accept': 'text/plain'}
-    r = request_other.post("http://192.168.0.108/add.comment", json=data_json, headers=newHeaders)
-    return "Okey"
+    url = "http://192.168.0.108/add.comment?token=" + token
+    headers = {'Accepts': 'application/json'}
+
+    session = Session()
+    session.headers.update(headers)
+
+    # newHeaders = {'Content-type': 'application/json', 'Accept': 'text/plain'}
+
+    try:
+        response = session.get(url, data=data)
+    except (ConnectionError, Timeout, TooManyRedirects) as e:
+        logger.warning(e)
+
+    # newHeaders = {'Content-type': 'application/json', 'Accept': 'text/plain'}
+    # r = request_other.post("http://192.168.0.108/add.comment", json=data_json, headers=newHeaders)
+    return str("r")
 
 
 @api.route('/add.comment', methods=['POST'])
@@ -56,6 +71,7 @@ def add_comment():
 @api.route('/get.comments', methods=['POST'])
 @token_required
 def get_comments():
+    pass
 
 
 
