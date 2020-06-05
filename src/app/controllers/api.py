@@ -3,11 +3,9 @@ import logging
 import re
 
 import requests as request_other
-from requests import Request, Session
-from flask import Blueprint, request, Response, jsonify, make_response
+from flask import Blueprint, request, jsonify, make_response
 from flask_login import current_user
 
-from .auth import token_required
 from .. import services
 
 api = Blueprint('api', __name__)
@@ -81,7 +79,6 @@ def push_comment(token, username, comment_object_id, comment_text):
     if site_admin_id is not None:
         services.add_comment(username=username, comment_object_id=comment_object_id,
                              comment_text=comment_text, site_admin_id=site_admin_id)
-        logger.info(str(services.show_comments()))
         return "True"
 
 

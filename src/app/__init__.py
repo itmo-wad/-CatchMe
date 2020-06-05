@@ -1,10 +1,8 @@
 import datetime
 import logging
-import os
-from datetime import timedelta
 from logging.handlers import RotatingFileHandler
 
-from flask import Flask, session
+from flask import Flask
 from flask_login import LoginManager
 from flask_sqlalchemy import SQLAlchemy
 

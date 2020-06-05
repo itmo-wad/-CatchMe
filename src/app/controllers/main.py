@@ -1,15 +1,13 @@
 import logging
 import os
 
+from faker import Faker
 from flask import Blueprint, send_from_directory, render_template
 from flask import make_response, request
-from flask_login import login_required
 from flask_login import current_user
-from faker import Faker
-from .. import app
+from flask_login import login_required
 
 from . import auth
-from . import fake_api
 from .. import app, services
 
 fake = Faker()
@@ -33,9 +31,6 @@ def admin():
 @main.route('/list_comment', methods=['GET'])
 @login_required
 def list_comment():
-    # TODO
-    # Add filter to get comments per siteadmin
-    # comments = fake_api.comment_database
     comments = services.get_comments_by_site_admin_id(current_user.id)
     return render_template('list_comment.html', comments=comments, user=current_user)
 
@@ -52,8 +47,6 @@ def generate_key():
 def save_token():
     token = request.args.get('token')
     services.set_token(token, current_user.id)
-    # logger.info(token)
-    # logger.info(str(token))
     return "True"
 
 
