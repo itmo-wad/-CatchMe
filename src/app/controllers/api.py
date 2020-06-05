@@ -15,12 +15,13 @@ logger = logging.getLogger(__name__)
 @api.route('/test.add', methods=['GET'])
 def add_comment_get():
     token = services.get_token_by_admin_email(current_user.id)
+    token = token.TokenValue
     logger.info(token)
     logger.info(current_user.id)
-    data = {"username": "Lexi", "comment_object_id": "ede", "comment_text": "wefwe", "token": token}
+    data = {"username": "Maxi", "comment_object_id": "grobb", "comment_text": "This is the this is", "token": token}
     data_json = json.dumps(data)
     newHeaders = {'Content-type': 'application/json', 'Accept': 'text/plain'}
-    r = request_other.post("http://192.168.32.3/add.comment", json=data_json, headers=newHeaders)
+    r = request_other.post("http://192.168.0.108/add.comment", json=data_json, headers=newHeaders)
     return "Okey"
 
 
