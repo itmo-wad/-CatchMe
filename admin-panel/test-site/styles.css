@@ -1,0 +1,30 @@
+*{
+  margin: 0;
+  padding: 0;
+  font-family: 'Arial', sans-serif;
+  list-style: none;
+  text-decoration: none;
+}
+
+body{
+   background-color: #f1f1f1;
+}
+
+.envelop {
+  display: flex;
+  position: relative;
+}
+
+.envelop .container{
+  width: 100%;
+}
+
+.envelop .container .username{
+  padding: 30px;
+  background: #fff;
+  font-size: 30px;
+  color: black;
+  border-bottom: 1px solid grey;
+  display: flex;
+  justify-content: center;
+}
