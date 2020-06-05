@@ -29,3 +29,5 @@ build/
 notes.txt
 
 venv
+
+info.log

@@ -27,3 +27,6 @@ env/
 *.log
 build/
 notes.txt
+
+data/
+data/*

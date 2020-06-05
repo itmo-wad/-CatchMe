@@ -9,15 +9,16 @@ services:
 
     db:
         image: postgres
-        # restart: always
+        restart: always
         # ports:
         # -  "5432:5432"
         environment:
             POSTGRES_USER: "simple_user"
-            POSTGRES_PASSWORD: "simple_user"
+            POSTGRES_PASSWORD: simple_user
             POSTGRES_DB: "commentcloud"
-        volumes:
-            - postgres_data:/var/lib/postgresql/data
+            PGDATA: "/var/lib/postgresql/data/pgdata"
+        # volumes:
+        #     - ./data:/var/lib/postgresql/pgdata
 
     comment-cloud:
         build:
@@ -28,5 +29,5 @@ services:
         volumes:
           - ./src:/usr/src
 
-volumes:
-    postgres_data:
+# volumes:
+#     postgres_data:

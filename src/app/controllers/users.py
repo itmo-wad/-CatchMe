@@ -32,3 +32,4 @@ def user_loader(email):
 def unauthorized_handler():
     flash("Please login before Пожалуйста!")
     return redirect(url_for('main.index'))
+

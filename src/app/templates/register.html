@@ -3,6 +3,7 @@
   <head>
     <meta charset="utf-8">
     <title>Register</title>
+    <link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico') }}">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
     <link rel="stylesheet" href="static/css/style.css">
     <link rel="stylesheet" href="static/css/login.css">
@@ -38,7 +39,7 @@
     </section>
 
     <section id="description">
-        <form action="/register" method="post">
+        <form method="post">
           <div class="container">
             <label for="uname"><b>Username</b></label>
             <input type="text" placeholder="username" name="username" required>
@@ -54,5 +55,5 @@
     <footer>
       <p class="text-center">Comment cloud project - ITMO</p>
     </footer>
-  </body>
+</body>
 </html>

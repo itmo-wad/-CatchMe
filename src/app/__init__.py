@@ -2,9 +2,11 @@ import logging
 import os
 from logging.handlers import RotatingFileHandler
 
-from flask_login import LoginManager
 from flask import Flask
+from flask_login import LoginManager
 from flask_sqlalchemy import SQLAlchemy
+
+from . import secrets as s
 
 db = SQLAlchemy()
 secret_key = os.urandom(16)
@@ -30,12 +32,15 @@ def register_blueprints(app):
 
     from .controllers.api import api
     app.register_blueprint(api)
+
+    from .controllers.fake_api import fake_api
+    app.register_blueprint(fake_api)
     return None
 
 
 def create_db(app):
-    DB_URL = 'postgresql+psycopg2://{user}:{pw}@{url}/{db}'.format(user='simple_user', pw='simple_user', url='db:5432',
-                                                                   db='commentcloud')
+    DB_URL = 'postgresql+psycopg2://{user}:{pw}@{url}/{db}'.format(user=s.user, pw=s.pw, url=s.url,
+                                                                   db=s.db)
     app.config['SQLALCHEMY_DATABASE_URI'] = DB_URL
     app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
     app.config['SQLALCHEMY_ECHO'] = True
