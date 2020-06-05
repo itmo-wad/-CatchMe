@@ -56,6 +56,7 @@ def save_token():
     # logger.info(str(token))
     return "True"
 
+
 @main.route('/gen_token', methods=['GET'])
 @login_required
 def gen_token():

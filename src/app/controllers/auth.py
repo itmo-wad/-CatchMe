@@ -22,7 +22,7 @@ def login():
         current_user.id
         return redirect(url_for("main.admin"))
     except:
-        return render_template('login.html')
+        return render_template('login.html', error="")
 
 
 @auth.route("/logout")
@@ -60,12 +60,13 @@ def register_post():
     password = request.form.get('password')
     site_admin = services.get_site_admin_by_email(email)
     if site_admin:
-        return redirect(url_for('auth.register'))
+        return redirect(url_for('auth.login'))
     try:
         services.add_site_admin(username, email, generate_password_hash(password, method='sha256'))
+        return redirect(url_for('auth.login'))
     except Exception as ex:
         logger.warning(ex)
-    return redirect(url_for('auth.login'))
+    return redirect(url_for('auth.register'))
 
 
 # Token generator
@@ -73,7 +74,9 @@ def get_token():
     expiration_date = datetime.datetime.utcnow() + \
             datetime.timedelta(seconds=36000)
     token = jwt.encode({'exp': expiration_date}, app.secret_key, algorithm='HS256')
+    token = token[2:-1]
     services.set_token(token, current_user.id)
+    logger.info(token)
     # logger.info(str(services.get_site_admin_id_by_token_value(token)))
     # logger.info(str(services.show()))
     return token
@@ -85,11 +88,12 @@ def get_token():
 def token_required(f):
     @wraps(f)
     def wrapper(*args, **kwargs):
-        token = request.args.get('token')
+        token_value = request.args.get('token')
+        token_value = token_value[2:-1]
         try:
-            jwt.decode(token, app.secret_key)
-            logger.info(str(token))
-            token = services.get_token_by_token(token)
+            logger.info('token_required:  ' + str(token_value))
+            str(jwt.decode(token_value, app.secret_key))
+            token = services.get_token_by_token(token_value)
             logger.info(str(token.Status))
             if token.Status == True:
                 return f(*args, **kwargs)

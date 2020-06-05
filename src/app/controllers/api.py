@@ -6,6 +6,7 @@ import requests as request_other
 from flask import Blueprint, request
 from flask_login import current_user
 
+from .auth import token_required
 from .. import services
 
 api = Blueprint('api', __name__)
@@ -26,21 +27,23 @@ def add_comment_get():
 
 
 @api.route('/add.comment', methods=['POST'])
+@token_required
 def add_comment():
     logger.info(str(request.content_type) + ",  " + str(request))
     if request.is_json:
         json_str = request.get_json()
         json_dict = json.loads(json_str)
+        logger.info(str(request.args.get('token')))
         logger.info(str(type(json_dict)) + "  " + str(json_dict))
-        if (("username" and "comment_object_id" and "comment_text" and "token") in json_dict) and len(json_dict) == 4:
+        if (("username" and "comment_object_id" and "comment_text") in json_dict) and len(json_dict) == 3:
             username = str(json_dict['username'])
             comment_object_id = str(json_dict['comment_object_id'])
             comment_text = str(json_dict['comment_text'])
-            token = str(json_dict['token'])
             logger.info('func --add_comment: {u, id, text} - ' + username + ", " + comment_object_id + ", " + comment_text)
             if check_username(json_dict['username']) and check_comment_object_id(json_dict['comment_object_id']) and \
                     check_comment_text(json_dict['comment_text']):
                 try:
+                    token = request.args.get('token')
                     push_comment(token, username, comment_object_id, comment_text)
                 except Exception as ex:
                     pass
@@ -50,12 +53,20 @@ def add_comment():
     return "Redirected"
 
 
+@api.route('/get.comments', methods=['POST'])
+@token_required
+def get_comments():
+
+
+
 def push_comment(token, username, comment_object_id, comment_text):
     site_admin_id = services.get_site_admin_id_by_token_value(token)
     logger.info(site_admin_id)
     if site_admin_id is not None:
         services.add_comment(username=username, comment_object_id=comment_object_id,
                              comment_text=comment_text, site_admin_id=site_admin_id)
+        logger.info(str(services.show_comments()))
+        return "True"
 
 
 def check_username(username):
@@ -87,7 +98,7 @@ def check_comment_text(comment_text):
 
 # def check_token(token):
 #     token = str(token)
-#     pattern = '^\w{1,256}$'
+#     pattern = "^\w{1,256}$"
 #     if re.fullmatch(pattern, token) is not None:
 #         return token
 #     else:
