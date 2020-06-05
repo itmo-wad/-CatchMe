@@ -81,6 +81,19 @@ def get_site_admin_id_by_token_value(token_value):
         logger.warning('func -- get_site_admin_by_token_value: ' + str(ex))
 
 
+def get_token_by_admin_email(site_admin_email):
+    try:
+        site_admin = get_site_admin_by_email(site_admin_email)
+        if site_admin is not None:
+            token = Tokens.query.filter(Tokens.SiteAdminId == site_admin.Id).first()
+            if token:
+                return token.TokenValue
+            else:
+                return None
+    except Exception as ex:
+        logger.warning('func -- get_site_admin_by_token_value: ' + str(ex))
+
+
 def get_comment_by_site_admin_id(site_admin_email, comment_object_id):
     site_admin = SiteAdmins.query.filter(SiteAdmins.Email == site_admin_email).first()
     return Comments.query.with_parent(site_admin).filter(Comments.CommentObjectId == comment_object_id).all()
