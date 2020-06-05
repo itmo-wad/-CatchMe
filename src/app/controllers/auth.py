@@ -77,8 +77,6 @@ def get_token():
     token = token[2:-1]
     services.set_token(token, current_user.id)
     logger.info(token)
-    # logger.info(str(services.get_site_admin_id_by_token_value(token)))
-    # logger.info(str(services.show()))
     return token
 
 
@@ -91,7 +89,7 @@ def token_required(f):
         token_value = request.args.get('token')
         try:
             logger.info('token_required:  ' + str(token_value))
-            str(jwt.decode(token_value, app.secret_key))
+            # str(jwt.decode(token_value, app.secret_key))
             token = services.get_token_by_token(token_value)
             logger.info(str(token.Status))
             if token.Status == True:

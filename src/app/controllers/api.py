@@ -20,29 +20,14 @@ def add_comment_get():
     token = token.TokenValue
     logger.info(token)
     logger.info(current_user.id)
-
-    data = {"username": "Maxi", "comment_object_id": "grobb", "comment_text": "This is the this is", "token": token}
+    data = {"username": "Maxi", "comment_object_id": "grobb", "comment_text": "This is the this is"}
     data_json = json.dumps(data)
-    url = "http://192.168.0.108/add.comment?token=" + token
-    headers = {'Accepts': 'application/json'}
-
-    session = Session()
-    session.headers.update(headers)
-
-    # newHeaders = {'Content-type': 'application/json', 'Accept': 'text/plain'}
-
-    try:
-        response = session.get(url, data=data)
-    except (ConnectionError, Timeout, TooManyRedirects) as e:
-        logger.warning(e)
-
-    # newHeaders = {'Content-type': 'application/json', 'Accept': 'text/plain'}
-    # r = request_other.post("http://192.168.0.108/add.comment", json=data_json, headers=newHeaders)
-    return str("r")
+    newHeaders = {'Content-type': 'application/json', 'Accept': 'text/plain'}
+    r = request_other.post("http://192.168.1.62/add.comment?token={token}".format(token=token), json=data_json, headers=newHeaders)
+    return "Okey"
 
 
 @api.route('/add.comment', methods=['POST'])
-@token_required
 def add_comment():
     logger.info(str(request.content_type) + ",  " + str(request))
     if request.is_json:
@@ -55,8 +40,9 @@ def add_comment():
             comment_object_id = str(json_dict['comment_object_id'])
             comment_text = str(json_dict['comment_text'])
             logger.info('func --add_comment: {u, id, text} - ' + username + ", " + comment_object_id + ", " + comment_text)
-            if check_username(json_dict['username']) and check_comment_object_id(json_dict['comment_object_id']) and \
-                    check_comment_text(json_dict['comment_text']):
+            # if check_username(username) and check_comment_object_id(comment_object_id) and \
+            #         check_comment_text(comment_text):
+            if True:
                 try:
                     token = request.args.get('token')
                     push_comment(token, username, comment_object_id, comment_text)
@@ -68,11 +54,11 @@ def add_comment():
     return "Redirected"
 
 
-@api.route('/get.comments', methods=['POST'])
-@token_required
-def get_comments():
-    pass
-
+@api.route('/show', methods=['GET'])
+def show_comments():
+    token = services.get_token_by_admin_email(current_user.id)
+    token = token.TokenValue
+    return str(services.show_comments_admin_id(token))
 
 
 def push_comment(token, username, comment_object_id, comment_text):
