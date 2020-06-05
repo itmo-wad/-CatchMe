@@ -20,7 +20,7 @@ def add_site_admin(username, email, passwdhash):
         logger.warning('func -- add_site_admin: ' + str(ex))
 
 
-def set_token(token_value, status, site_admin_email):
+def set_token(token_value, status, site_admin_id):
     try:
         site_admin = SiteAdmins.query.filter(SiteAdmins.Email == site_admin_email).first()
         token = Tokens(TokenValue=token_value, Status=status, SiteAdmin=site_admin)
@@ -31,11 +31,10 @@ def set_token(token_value, status, site_admin_email):
         logger.warning('func -- set_token: ' + str(ex))
 
 
-def add_comment(site_admin_email, username, comment_object_id, comment_text, parent_id=None):
+def add_comment(site_admin_id, username, comment_object_id, comment_text, parent_id=None):
     try:
-        site_admin = SiteAdmins.query.filter(SiteAdmins.Email == site_admin_email).first()
         comment = Comments(Username=username, CommentObjectId=comment_object_id,
-                           CommentText=comment_text, ParentId=parent_id, SiteAdmin=site_admin)
+                           CommentText=comment_text, ParentId=parent_id, SiteAdmin=site_admin_id)
         logger.info(comment)
         db.session.add(comment)
         db.session.commit()
@@ -63,3 +62,20 @@ def get_site_admin_by_username(site_admin_username):
             return None
     except Exception as ex:
         logger.info('func -- get_site_admin_by_username: ' + str(ex))
+
+
+def get_site_admin_id_by_token_value(token_value):
+    try:
+        token = Tokens.query.filter(Tokens.TokenValue == token_value).first()
+        if token:
+            return token.SiteAdminID
+        else:
+            return None
+    except Exception as ex:
+        logger.info('func -- get_site_admin_by_token_value: ' + str(ex))
+
+
+def get_comment_by_site_admin_id(site_admin_email, comment_object_id):
+    site_admin = SiteAdmins.query.filter(SiteAdmins.Email == site_admin_email).first()
+    return Comments.query.with_parent(site_admin).filter(Comments.CommentObjectId == comment_object_id).all()
+

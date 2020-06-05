@@ -1,26 +1,31 @@
 import logging
 import os
+import socket
 
 from faker import Faker
 from flask import Blueprint, send_from_directory, render_template
-from flask_login import login_required
+from flask_login import login_required, current_user
 
 from . import auth
 
 fake = Faker()
 
-main = Blueprint('main', __name__, template_folder='app/templates', static_folder='app/static')
+main = Blueprint('main', __name__)
 logger = logging.getLogger(__name__)
 
 
 @main.route('/', methods=['GET'])
 def index():
+    hostname = socket.gethostname()
+    IPAddr = socket.gethostbyname(hostname)
+    logger.info(str(IPAddr))
     return render_template('index.html')
 
 
 @main.route('/admin', methods=['GET'])
 @login_required
 def admin():
+    logger.info(str(current_user))
     return render_template('admin.html')
 
 

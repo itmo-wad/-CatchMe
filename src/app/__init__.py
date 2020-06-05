@@ -9,6 +9,7 @@ from flask_sqlalchemy import SQLAlchemy
 db = SQLAlchemy()
 secret_key = os.urandom(16)
 
+
 def configure_logging():
     logger = logging.getLogger(__name__)
     logger.setLevel(logging.INFO)
@@ -41,7 +42,7 @@ def create_db(app):
     db.init_app(app)
 
 
-app = Flask(__name__)
+app = Flask(__name__, static_folder='./static/', template_folder='./templates/')
 app.secret_key = secret_key
 create_db(app)
 login = LoginManager(app)

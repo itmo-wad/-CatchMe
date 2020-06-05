@@ -4,10 +4,11 @@ from functools import wraps
 
 import jwt
 from flask import request, url_for, redirect, jsonify, Blueprint, render_template
-from flask_login import login_user
+from flask_login import login_user, current_user
 from werkzeug.security import check_password_hash, generate_password_hash
 
 from . import users as u
+from .users import User
 from .. import app, services
 
 auth = Blueprint('auth', __name__)
@@ -35,9 +36,8 @@ def login_post():
         logging.warning(str(site_admin.Passwdhash))
         logging.warning(str(site_admin))
         if check_password_hash(site_admin.Passwdhash, password):
-            user = u.User()
-            user.id = email
-            login_user(user)
+            login_user(User(site_admin))
+            logger.info(str(current_user))
             return redirect(url_for('main.index'))
     return "ERROR"
 
@@ -57,13 +57,12 @@ def register_post():
     return redirect(url_for('auth.login'))
 
 
-
-
 # Token generator
 def get_token():
     expiration_date = datetime.datetime.utcnow() + \
             datetime .timedelta(seconds=100)
     token = jwt.encode({'exp': expiration_date}, app.secret_key, algorithm='HS256')
+
     return token
 
 
