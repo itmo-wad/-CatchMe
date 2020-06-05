@@ -22,7 +22,7 @@ def login():
         current_user.id
         return redirect(url_for("main.admin"))
     except:
-        return render_template('login.html')
+        return render_template('login.html', error="")
 
 
 @auth.route("/logout")

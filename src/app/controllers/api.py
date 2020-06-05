@@ -54,6 +54,12 @@ def add_comment():
     return "Redirected"
 
 
+@api.route('/get.comments', methods=['POST'])
+@token_required
+def get_comments():
+
+
+
 def push_comment(token, username, comment_object_id, comment_text):
     site_admin_id = services.get_site_admin_id_by_token_value(token)
     logger.info(site_admin_id)
