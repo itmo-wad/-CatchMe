@@ -20,15 +20,31 @@ def add_site_admin(username, email, passwdhash):
         logger.warning('func -- add_site_admin: ' + str(ex))
 
 
-def set_token(token_value, status, site_admin_id):
+def set_token(token_value, site_admin_email, status=True):
     try:
+        token_value = str(token_value)
+        site_admin_email = str(site_admin_email)
         site_admin = SiteAdmins.query.filter(SiteAdmins.Email == site_admin_email).first()
-        token = Tokens(TokenValue=token_value, Status=status, SiteAdmin=site_admin)
-        logger.info(token)
-        db.session.add(token)
-        db.session.commit()
+        if site_admin is not None:
+            token = Tokens.query.filter(Tokens.SiteAdminId == site_admin.Id).first()
+            if token is None:
+                    token = Tokens(TokenValue=token_value, Status=status, SiteAdminId=site_admin.Id)
+                    logger.info('func -- set_token: ' + str(token))
+                    db.session.add(token)
+                    db.session.commit()
+            else:
+                update_token(token_value, site_admin.Id)
     except Exception as ex:
         logger.warning('func -- set_token: ' + str(ex))
+
+
+def update_token(token_value, site_admin_id):
+    try:
+        token = Tokens.query.filter(Tokens.SiteAdminId == site_admin_id).first()
+        token.TokenValue = token_value
+        db.session.commit()
+    except Exception as ex:
+        logger.warning('func -- update_token: ' + str(ex))
 
 
 def add_comment(site_admin_id, username, comment_object_id, comment_text, parent_id=None):
@@ -50,32 +66,25 @@ def get_site_admin_by_email(site_admin_email):
         else:
             return None
     except Exception as ex:
-        logger.info('func -- get_site_admin_by_email: ' + str(ex))
-
-
-def get_site_admin_by_username(site_admin_username):
-    try:
-        site_admin = SiteAdmins.query.filter(SiteAdmins.Username == site_admin_username).first()
-        if site_admin:
-            return site_admin
-        else:
-            return None
-    except Exception as ex:
-        logger.info('func -- get_site_admin_by_username: ' + str(ex))
+        logger.warning('func -- get_site_admin_by_email: ' + str(ex))
 
 
 def get_site_admin_id_by_token_value(token_value):
     try:
+        token_value = str(token_value)
         token = Tokens.query.filter(Tokens.TokenValue == token_value).first()
         if token:
-            return token.SiteAdminID
+            return token.SiteAdminId
         else:
             return None
     except Exception as ex:
-        logger.info('func -- get_site_admin_by_token_value: ' + str(ex))
+        logger.warning('func -- get_site_admin_by_token_value: ' + str(ex))
 
 
 def get_comment_by_site_admin_id(site_admin_email, comment_object_id):
     site_admin = SiteAdmins.query.filter(SiteAdmins.Email == site_admin_email).first()
     return Comments.query.with_parent(site_admin).filter(Comments.CommentObjectId == comment_object_id).all()
 
+
+def show():
+    return Tokens.query.all()
