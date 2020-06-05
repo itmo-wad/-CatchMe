@@ -10,3 +10,17 @@ $('.gen_token').click(function() {
         }
     });
 });
+
+
+// Token storage
+$('.save_token').click(function() {
+    token = $('.token_area').val();
+    console.log(token);
+    if (token.length == 105) {
+      $.get("/save_token", { token:token }).done(function(result) {
+        if (result=="True"){
+          location.reload();
+        };
+      };
+    }
+});

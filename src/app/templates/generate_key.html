@@ -2,6 +2,7 @@
 
 {% block style %}
 <link rel="stylesheet" href="css/generate_key.css">
+	<link rel="stylesheet" href="css/list_comment.css">
 {% endblock %}
 
 {% block content %}
@@ -9,13 +10,28 @@
             <form action="javascript:void(0);">
               <div class="container">
                 <label for="uname"><b>Key</b></label><br/>
-        				<textarea class="token_area" rows="3" cols="60" style="resize:none" name="description">
-        				Details here...
+        				<textarea class="token_area" rows="3" cols="68" style="resize:none" name="description">
         				</textarea>
                 <button type="submit" class="gen_token">Generate key</button>
+                <button type="submit" class="save_token">Save key</button>
             </div>
            </form>
           </section>
+
+          <!-- {% for token in tokens %}
+          <div class="dialogbox">
+            <div class="comment-box">
+              <div class="title-message">
+                <span>{{ token.status }}</span>
+              </div><br>
+              <span class="bubble arrow"></span>
+              <div class="message">
+                <span>{{ token.value }}</span>
+              </div>
+            </div>
+          </div>
+          {% endfor %} -->
+
 {% endblock %}
 
 {% block scipt %}

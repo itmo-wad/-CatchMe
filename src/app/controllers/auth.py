@@ -76,7 +76,7 @@ def register_post():
 # Token generator
 def get_token():
     expiration_date = datetime.datetime.utcnow() + \
-            datetime.timedelta(seconds=3600)
+            datetime.timedelta(seconds=36000)
     token = jwt.encode({'exp': expiration_date}, app.secret_key, algorithm='HS256')
     services.set_token(token, current_user.id)
     logger.info(str(services.get_site_admin_id_by_token_value(token)))

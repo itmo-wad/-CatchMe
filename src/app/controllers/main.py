@@ -1,11 +1,12 @@
 import logging
 import os
 
-from faker import Faker
 from flask import Blueprint, send_from_directory, render_template
-from flask import make_response
-from flask_login import current_user
+from flask import make_response, request
 from flask_login import login_required
+from flask_login import current_user
+from faker import Faker
+from .. import app
 
 from . import auth
 from . import fake_api
@@ -41,8 +42,21 @@ def list_comment():
 @main.route('/generate_key', methods=['GET'])
 @login_required
 def generate_key():
-    return render_template('generate_key.html')
+    # TODO
+    # Make the get token function
+    # Returning comments from the database
+    tokens = "__"
+    return render_template('generate_key.html', tokens=tokens)
 
+
+@main.route('/save_token', methods=['GET'])
+@login_required
+def save_token():
+    token = request.args.get('token')
+    # TODO
+    # Here you save token to the DB
+    logger.info(str(token))
+    return "True"
 
 @main.route('/gen_token', methods=['GET'])
 @login_required
