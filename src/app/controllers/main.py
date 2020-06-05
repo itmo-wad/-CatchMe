@@ -1,8 +1,6 @@
 import logging
 import os
-import socket
 
-from .. import app
 from faker import Faker
 from flask import Blueprint, send_from_directory, render_template
 from flask import make_response
@@ -11,6 +9,7 @@ from flask_login import login_required
 
 from . import auth
 from . import fake_api
+from .. import app, services
 
 fake = Faker()
 
@@ -20,10 +19,7 @@ logger = logging.getLogger(__name__)
 
 @main.route('/', methods=['GET'])
 def index():
-    hostname = socket.gethostname()
-    IPAddr = socket.gethostbyname(hostname)
-    logger.info(str(IPAddr))
-    return render_template('index.html')
+    return render_template('index.html', user=current_user)
 
 
 @main.route('/admin', methods=['GET'])

@@ -18,7 +18,7 @@ def add_comment_get():
     data = {"username": "Lexi", "comment_object_id": "ede", "comment_text": "wefwe", "token": "ewfwe"}
     data_json = json.dumps(data)
     newHeaders = {'Content-type': 'application/json', 'Accept': 'text/plain'}
-    r = request_other.post("http://172.23.0.2/add.comment", json=data_json, headers=newHeaders)
+    r = request_other.post("http://172.28.0.4/add.comment", json=data_json, headers=newHeaders)
     return "Okey"
 
 
@@ -45,7 +45,6 @@ def add_comment():
                     logger.info("ADDED")
                 logger.info('func --add_comment: {u, id, text} - ' + username + ", " + comment_object_id + ", " + comment_text)
                 logger.info('func --add_comment: {ip-address} - ' + str(request.remote_addr))
-                logger.info(str(current_user))
             return "okey"
         else:
             return "Not okey"
@@ -72,17 +71,16 @@ def check_comment_object_id(comment_object_id):
 
 def check_comment_text(comment_text):
     comment_text = str(comment_text)
-    pattern = '^\w{1,64}$'
+    pattern = '^\w{1,128}$'
     if re.fullmatch(pattern, comment_text) is not None:
         return comment_text
     else:
         return None
 
 
-# TODO: change the check of the size of the token and its characters
 def check_token(token):
     token = str(token)
-    pattern = '^\w{1,64}$'
+    pattern = '^\w{1,256}$'
     if re.fullmatch(pattern, token) is not None:
         return token
     else:
