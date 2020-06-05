@@ -93,6 +93,8 @@ def token_required(f):
         token = request.args.get('token')
         try:
             jwt.decode(token, app.secret_key)
+            # TODO
+            # Check token in db
             return f(*args, **kwargs)
         except:
             return make_response(jsonify({'error': 'Need a valid Token'}), 401)

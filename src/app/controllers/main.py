@@ -55,6 +55,7 @@ def save_token():
     token = request.args.get('token')
     # TODO
     # Here you save token to the DB
+    services.set_token(token, current_user.id)
     logger.info(str(token))
     return "True"
 
