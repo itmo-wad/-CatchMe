@@ -8,6 +8,7 @@
 
 {% block content %}
 
+				{% if comments %}
 				{% for comment in comments %}
 					<div class="dialogbox">
 						<div class="comment-box">
@@ -21,5 +22,6 @@
 						</div>
 					</div>
 		    {% endfor %}
+				{% endif %}
 
 {% endblock %}

@@ -114,7 +114,7 @@ def get_comment_by_site_admin_id(site_admin_email, comment_object_id):
     return Comments.query.with_parent(site_admin).filter(Comments.CommentObjectId == comment_object_id).all()
 
 
-def get_comments_by_site_admin_id(site_admin_email, comment_object_id):
+def get_comments_by_site_admin_id(site_admin_email):
     try:
         site_admin = SiteAdmins.query.filter(SiteAdmins.Email == site_admin_email).first()
         comments =  Comments.query.filter(Comments.SiteAdminId == site_admin).all()

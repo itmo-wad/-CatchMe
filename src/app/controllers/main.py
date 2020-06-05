@@ -52,13 +52,15 @@ def generate_key():
 def save_token():
     token = request.args.get('token')
     services.set_token(token, current_user.id)
-    logger.info(str(token))
+    # logger.info(token)
+    # logger.info(str(token))
     return "True"
 
 @main.route('/gen_token', methods=['GET'])
 @login_required
 def gen_token():
     token = auth.get_token()
+    logger.info(token)
     return token
 
 
