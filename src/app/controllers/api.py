@@ -3,7 +3,8 @@ import logging
 import re
 
 import requests as request_other
-from flask import Blueprint, request
+from requests import Request, Session
+from flask import Blueprint, request, Response, make_response, jsonify
 from flask_login import current_user
 
 from .auth import token_required
@@ -22,7 +23,7 @@ def add_comment_get():
     data = {"username": "Maxi", "comment_object_id": "grobb", "comment_text": "This is the this is"}
     data_json = json.dumps(data)
     newHeaders = {'Content-type': 'application/json', 'Accept': 'text/plain'}
-    r = request_other.post("http://192.168.1.62/add.comment?token={token}".format(token=token), json=data_json, headers=newHeaders)
+    r = request_other.post("http://192.168.0.108/add.comment?token={token}".format(token=token), json=data_json, headers=newHeaders)
     return "Okey"
 
 
@@ -35,7 +36,6 @@ def add_comment():
         logger.info(str(request.args.get('token')))
         logger.info(str(type(json_dict)) + "  " + str(json_dict))
         if (("username" and "comment_object_id" and "comment_text") in json_dict) and len(json_dict) == 3:
-        # if True:
             username = str(json_dict['username'])
             comment_object_id = str(json_dict['comment_object_id'])
             comment_text = str(json_dict['comment_text'])
@@ -56,9 +56,22 @@ def add_comment():
 
 @api.route('/show', methods=['GET'])
 def show_comments():
-    comments = services.get_comments_by_site_admin_id(current_user.id)
-    logger.info(str(type(comments)))
-    return str(comments)
+    token_value = request.args.get('token')
+    logger.info(str(token_value))
+    site_admin_id = services.get_site_admin_id_by_token_value(token_value)
+    logger.info(str(site_admin_id))
+    if site_admin_id:
+        comments = services.get_comment_by_site_admin_id(site_admin_id)
+        logger.info(str(comments))
+        logger.info(str(type(comments)))
+        dictionary = dict()
+        dictionary["response"] = comments
+        # return make_response(jsonify(dictionary), 201)
+        try:
+            json_arr = json.dumps(dictionary)
+            return Response(json_arr, status=201, mimetype='application/json')
+        except Exception as ex:
+            logger.info(str(ex))
 
 
 def push_comment(token, username, comment_object_id, comment_text):
@@ -67,7 +80,6 @@ def push_comment(token, username, comment_object_id, comment_text):
     if site_admin_id is not None:
         services.add_comment(username=username, comment_object_id=comment_object_id,
                              comment_text=comment_text, site_admin_id=site_admin_id)
-        logger.info(str(services.show_comments()))
         return "True"
 
 

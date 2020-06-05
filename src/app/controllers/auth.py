@@ -87,7 +87,6 @@ def token_required(f):
     @wraps(f)
     def wrapper(*args, **kwargs):
         token_value = request.args.get('token')
-        token_value = token_value[2:-1]
         try:
             logger.info('token_required:  ' + str(token_value))
             # str(jwt.decode(token_value, app.secret_key))

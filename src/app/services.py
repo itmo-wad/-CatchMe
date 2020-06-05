@@ -109,9 +109,9 @@ def get_token_by_token(token_value):
         logger.warning('func -- get_token_by_token: ' + str(ex))
 
 
-def get_comment_by_site_admin_id(site_admin_email, comment_object_id):
-    site_admin = SiteAdmins.query.filter(SiteAdmins.Email == site_admin_email).first()
-    return Comments.query.with_parent(site_admin).filter(Comments.CommentObjectId == comment_object_id).all()
+def get_comment_by_site_admin_id(site_admin_id):
+    site_admin = SiteAdmins.query.filter(SiteAdmins.Id == site_admin_id).first()
+    return Comments.query.filter(Comments.SiteAdminId == site_admin.Id).all()
 
 
 def get_comments_by_site_admin_id(site_admin_email):

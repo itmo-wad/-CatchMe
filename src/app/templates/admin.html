@@ -24,7 +24,9 @@
     </div>
     <div class="container">
         <div class="username">
-  					<p>Name username</p>
+						{% if user.id %}
+  						<p>{{user.id}}</p>
+						{% endif %}
 				</div>
 				<div class="button-logout">
               <a href="logout">logout</a>
