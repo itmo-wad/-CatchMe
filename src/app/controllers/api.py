@@ -4,7 +4,7 @@ import re
 
 import requests as request_other
 from requests import Request, Session
-from flask import Blueprint, request, Response
+from flask import Blueprint, request, Response, jsonify, make_response
 from flask_login import current_user
 
 from .auth import token_required
@@ -62,8 +62,17 @@ def show_comments():
     logger.info(str(site_admin_id))
     if site_admin_id:
         comments = services.get_comment_by_site_admin_id(site_admin_id)
-        logger.info(str(comments))
-    return Response(json.dumps(str(comments)), status=201, mimetype='application/json')
+        comment_database = []
+        for comment in comments:
+            new_comment = {
+                "site_admin_id": comment.SiteAdminId,
+                "username": comment.Username,
+                "CommentObjectId": comment.CommentObjectId,
+                "CommentText": comment.CommentText
+            }
+            comment_database.insert(0, new_comment)
+        logger.info(str(new_comment))
+    return make_response(jsonify(comment_database), 201)
 
 
 def push_comment(token, username, comment_object_id, comment_text):
