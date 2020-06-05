@@ -18,7 +18,11 @@ logger = logging.getLogger(__name__)
 
 @auth.route('/login', methods=['GET'])
 def login():
-    return render_template('login.html')
+    try:
+        current_user.id
+        return redirect(url_for("main.admin"))
+    except:
+        return render_template('login.html')
 
 
 @auth.route("/logout")
@@ -30,7 +34,11 @@ def logout():
 
 @auth.route('/register', methods=['GET'])
 def register():
-    return render_template('register.html')
+    try:
+        current_user.id
+        return redirect(url_for("main.admin"))
+    except:
+        return render_template('register.html')
 
 
 @auth.route('/login', methods=['POST'])

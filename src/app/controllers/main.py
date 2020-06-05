@@ -23,13 +23,13 @@ def index():
     hostname = socket.gethostname()
     IPAddr = socket.gethostbyname(hostname)
     logger.info(str(IPAddr))
-    return render_template('index.html')
+    return render_template('index.html', user = current_user)
 
 
 @main.route('/admin', methods=['GET'])
 @login_required
 def admin():
-    logger.info(str(current_user))
+    logger.info(str(current_user.id))
     return render_template('admin.html')
 
 
