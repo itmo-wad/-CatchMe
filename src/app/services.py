@@ -130,8 +130,10 @@ def show_tokens():
 
 
 # To check
-def show_comments():
-    return Comments.query.all()
+def show_comments_admin_id(token):
+    site_admin_id = get_site_admin_id_by_token_value(token)
+    if site_admin_id is not None:
+        return Comments.query.filter(Comments.SiteAdminId == site_admin_id).all()
 
 
 # To check
