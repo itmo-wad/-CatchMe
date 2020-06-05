@@ -7,8 +7,12 @@ logger = logging.getLogger(__name__)
 
 
 def get_comment_by_comments_object_id(site_admin_email, comment_object_id):
-    site_admin = SiteAdmins.query.filter(SiteAdmins.Email == site_admin_email).first()
-    return Comments.query.with_parent(site_admin).filter(Comments.CommentObjectId == comment_object_id).all()
+    try:
+        site_admin = SiteAdmins.query.filter(SiteAdmins.Email == site_admin_email).first()
+        comments = Comments.query.with_parent(site_admin).filter(Comments.CommentObjectId == comment_object_id).all()
+        return comments
+    except Exception as ex:
+        logger.warning('func -- get_comment_by_comments_object_id: ' + str(ex))
 
 
 def add_site_admin(username, email, passwdhash):
@@ -87,16 +91,33 @@ def get_token_by_admin_email(site_admin_email):
         if site_admin is not None:
             token = Tokens.query.filter(Tokens.SiteAdminId == site_admin.Id).first()
             if token:
-                return token.TokenValue
+                return token
             else:
                 return None
     except Exception as ex:
         logger.warning('func -- get_site_admin_by_token_value: ' + str(ex))
 
 
+def get_token_by_token(token):
+    try:
+        if token is not None:
+            token = Tokens.query.filter(Tokens.TokenValue == token).first()
+            if token:
+                return token
+            else:
+                return None
+    except Exception as ex:
+        logger.warning('func -- get_token_by_token: ' + str(ex))
+
+
 def get_comment_by_site_admin_id(site_admin_email, comment_object_id):
     site_admin = SiteAdmins.query.filter(SiteAdmins.Email == site_admin_email).first()
     return Comments.query.with_parent(site_admin).filter(Comments.CommentObjectId == comment_object_id).all()
+
+
+def get_comments_by_site_admin_id(site_admin_email):
+    site_admin = SiteAdmins.query.filter(SiteAdmins.Email == site_admin_email).first()
+    return Comments.query.filter(Comments.SiteAdminId == site_admin).all()
 
 
 def show():

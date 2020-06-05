@@ -5,8 +5,8 @@ from functools import wraps
 import jwt
 from flask import make_response
 from flask import request, url_for, redirect, jsonify, Blueprint, render_template
-from flask_login import current_user
-from flask_login import login_user, logout_user, login_required
+from flask_login import current_user, login_required
+from flask_login import login_user, logout_user
 from werkzeug.security import check_password_hash, generate_password_hash
 
 from .users import User
@@ -93,9 +93,11 @@ def token_required(f):
         token = request.args.get('token')
         try:
             jwt.decode(token, app.secret_key)
-            # TODO
-            # Check token in db
-            return f(*args, **kwargs)
+            logger.info(str(token))
+            token = services.get_token_by_token(token)
+            logger.info(str(token.Status))
+            if token.Status == True:
+                return f(*args, **kwargs)
         except:
             return make_response(jsonify({'error': 'Need a valid Token'}), 401)
     return wrapper

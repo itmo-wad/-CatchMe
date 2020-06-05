@@ -9,8 +9,8 @@ from flask_sqlalchemy import SQLAlchemy
 from . import secrets as s
 
 db = SQLAlchemy()
-secret_key = os.urandom(16)
-
+# secret_key = os.urandom(16)
+secret_key = 'c0M`e~t_C1O}d'
 
 def configure_logging():
     logger = logging.getLogger(__name__)

@@ -45,7 +45,7 @@ def generate_key():
     # TODO
     # Make the get token function
     # Returning comments from the database
-    tokens = "__"
+    tokens = services.get_token_by_admin_email(current_user.id)
     return render_template('generate_key.html', tokens=tokens)
 
 
@@ -53,8 +53,6 @@ def generate_key():
 @login_required
 def save_token():
     token = request.args.get('token')
-    # TODO
-    # Here you save token to the DB
     services.set_token(token, current_user.id)
     logger.info(str(token))
     return "True"

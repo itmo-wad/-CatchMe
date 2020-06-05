@@ -34,7 +34,6 @@ comment_database = [
 ]
 
 
-
 @fake_api.route('/get_comment', methods=['GET'])
 def get_comment():
     return make_response(jsonify(comment_database), 200)

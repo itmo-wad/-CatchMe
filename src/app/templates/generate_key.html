@@ -18,19 +18,19 @@
            </form>
           </section>
 
-          <!-- {% for token in tokens %}
+          {% if tokens.Status %}
           <div class="dialogbox">
             <div class="comment-box">
               <div class="title-message">
-                <span>{{ token.status }}</span>
+                <span>{{ tokens.Status }}</span>
               </div><br>
               <span class="bubble arrow"></span>
               <div class="message">
-                <span>{{ token.value }}</span>
+                <span>{{ tokens.TokenValue }}</span>
               </div>
             </div>
           </div>
-          {% endfor %} -->
+          {% endif %}
 
 {% endblock %}
 
