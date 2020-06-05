@@ -4,18 +4,17 @@ from app import db
 class Comments(db.Model):
     __tablename__ = 'comments'
     Id = db.Column(db.Integer, primary_key=True, autoincrement=True)
-    ParentId = db.Column(db.Integer)
     SiteAdminId = db.Column(db.Integer, db.ForeignKey('siteadmins.Id'), nullable=False)
     Username = db.Column(db.String(16), nullable=False)
-    CommentObjectId = db.Column(db.Integer, nullable=False)
+    CommentObjectId = db.Column(db.String, nullable=False)
     CommentText = db.Column(db.String(256))
 
     SiteAdmin = db.relationship('SiteAdmins',
                             backref=db.backref('comment', lazy=True))
 
     def __repr__(self):
-        return "{'Comment' : [id='%s', parent_id='%s', site_admin_id='%s', username='%s', CommentObjectId='%s', " \
-               "CommentText='%s']}" % (self.Id, self.ParentId, self.SiteAdminId, self.Username, self.CommentObjectId,
+        return "{'Comment' : [id='%s', site_admin_id='%s', username='%s', CommentObjectId='%s', " \
+               "CommentText='%s']}" % (self.Id, self.SiteAdminId, self.Username, self.CommentObjectId,
                                        self.CommentText)
 
 
