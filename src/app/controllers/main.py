@@ -35,16 +35,14 @@ def admin():
 def list_comment():
     # TODO
     # Add filter to get comments per siteadmin
-    comments = fake_api.comment_database
+    # comments = fake_api.comment_database
+    comments = services.get_comments_by_site_admin_id(current_user.id)
     return render_template('list_comment.html', comments=comments)
 
 
 @main.route('/generate_key', methods=['GET'])
 @login_required
 def generate_key():
-    # TODO
-    # Make the get token function
-    # Returning comments from the database
     tokens = services.get_token_by_admin_email(current_user.id)
     return render_template('generate_key.html', tokens=tokens)
 
