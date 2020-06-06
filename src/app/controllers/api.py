@@ -3,7 +3,7 @@ import logging
 import re
 
 import requests as request_other
-from flask import Blueprint, request, jsonify, make_response
+from flask import Blueprint, request, jsonify, make_response, Response
 from flask_login import current_user
 
 from .. import services
@@ -25,31 +25,37 @@ def add_comment_get():
     return "Okey"
 
 
+def validCommentObject(CommentObject):
+	if CommentObject and ("username" and "comment_object_id" and "comment_text") in CommentObject:
+		return True
+	else:
+		return False
+
+
 @api.route('/add.comment', methods=['POST'])
 def add_comment():
     logger.info(str(request.content_type) + ",  " + str(request))
-    if request.is_json:
-        json_str = request.get_json()
-        json_dict = json.loads(json_str)
+    json_str = request.get_json()
+    invalidCommentObjectErrorMsg = {
+    	"error": "Invalid Comment object passed in request",
+    	"helpString": "Data passed in similar to this \
+        {'username': 'Ivan', 'comment_text': 'I <3 Comment Cloud', 'comment_object_id': 'something_nice' }"
+    }
+    response = Response(json.dumps(invalidCommentObjectErrorMsg), status=409, mimetype='application/json')
+    if(validCommentObject(json_str)):
         logger.info(str(request.args.get('token')))
-        logger.info(str(type(json_dict)) + "  " + str(json_dict))
-        if (("username" and "comment_object_id" and "comment_text") in json_dict) and len(json_dict) == 3:
-            username = str(json_dict['username'])
-            comment_object_id = str(json_dict['comment_object_id'])
-            comment_text = str(json_dict['comment_text'])
-            logger.info('func --add_comment: {u, id, text} - ' + username + ", " + comment_object_id + ", " + comment_text)
-            # if check_username(username) and check_comment_object_id(comment_object_id) and \
-            #         check_comment_text(comment_text):
-            if True:
-                try:
-                    token = request.args.get('token')
-                    push_comment(token, username, comment_object_id, comment_text)
-                except Exception as ex:
-                    pass
-            return "okey"
-        else:
-            return "Not okey"
-    return "Redirected"
+        logger.info(str(type(json_str)) + "  " + str(json_str))
+        username = str(json_str['username'])
+        comment_object_id = str(json_str['comment_object_id'])
+        comment_text = str(json_str['comment_text'])
+        logger.info('func --add_comment: {u, id, text} - ' + username + ", " + comment_object_id + ", " + comment_text)
+        try:
+            token = request.args.get('token')
+            return push_comment(token, username, comment_object_id, comment_text)
+        except Exception as ex:
+            return make_response(str(ex), 202)
+    else:
+        return response
 
 
 @api.route('/show', methods=['GET'])
@@ -79,7 +85,8 @@ def push_comment(token, username, comment_object_id, comment_text):
     if site_admin_id is not None:
         services.add_comment(username=username, comment_object_id=comment_object_id,
                              comment_text=comment_text, site_admin_id=site_admin_id)
-        return "True"
+        return make_response("Comment Inserted", 201)
+    return make_response("Token Not valid", 401)
 
 
 def check_username(username):

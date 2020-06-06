@@ -26,7 +26,7 @@ def add_site_admin(username, email, passwdhash):
 
 def set_token(token_value, site_admin_email, status=True):
     try:
-        token_value = str(token_value)
+        token_value = token_value
         site_admin_email = str(site_admin_email)
         site_admin = SiteAdmins.query.filter(SiteAdmins.Email == site_admin_email).first()
         if site_admin is not None:

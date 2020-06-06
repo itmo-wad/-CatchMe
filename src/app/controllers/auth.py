@@ -74,7 +74,7 @@ def get_token():
     expiration_date = datetime.datetime.utcnow() + \
             datetime.timedelta(seconds=36000)
     token = jwt.encode({'exp': expiration_date}, app.secret_key, algorithm='HS256')
-    token = token[2:-1]
+    # token = token[2:-1]
     services.set_token(token, current_user.id)
     logger.info(token)
     return token
