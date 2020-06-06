@@ -3,6 +3,15 @@
       <img src="https://github.com/itmo-wad/CommentCloud/blob/master/Logo%20Comment%20cloud.png"><br>
 </div>
 
+Comment cloud it is a planform which provide the users an ability to embed the comment's section into their website or blog using API provided by the Comment cloud.
+Comment Сloud – is a unified service for embedding comments into websites. It provides an API for add operations.
+
+Comment cloud is a special fast, privacy-focused commenting platform which helps to websites owners, bloggers and other users to collect feedback, online polls and so on. All these operations can be done by users with no need to go deep into mechanism how comments work: storage, caching, nested comments, answers for comments, etc.
+
+Comment cloud platform can be reached via social network or directly at the website. All comments are stored in a database on user’s server and it will be updated in real time, which makes it useful to implement comments to all types of actions. Comment cloud is absolutely secure.
+
+Comment cloud convenient and useful instrument for any internet user.
+
 Plan of the ‘Comment cloud’ Project (Team # 4):
 
 - [x] 1.	Pick up the idea from the pool of ideas and discuss technical possibilities  and needs to develop it;
